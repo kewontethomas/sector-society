@@ -314,6 +314,10 @@ def buy(listing_id):
 
     flash("Purchase successful.")
 
+    create_world_event(
+        f"💰 {current_user.username} bought {listing.quantity} {listing.resource_name}."
+    )
+
     return redirect(url_for("market"))
 
 
