@@ -213,17 +213,44 @@ def inventory():
     )
 
 
-@app.route("/market")
+@app.route("/player/<username>")
 @login_required
-def market():
+def player_profile(username):
+    player = User.query.filter_by(username=username).first_or_404()
 
-    listings = MarketplaceListing.query.filter_by(
+    inventory_items = Inventory.query.filter_by(
+        user_id=player.id
+    ).all()
+
+    active_listings = MarketplaceListing.query.filter_by(
+        seller_id=player.id,
         status="active"
     ).all()
 
     return render_template(
+        "player_profile.html",
+        player=player,
+        inventory_items=inventory_items,
+        active_listings=active_listings
+    )
+
+
+@app.route("/market")
+@login_required
+def market():
+    listings = MarketplaceListing.query.filter_by(
+        status="active"
+    ).all()
+
+    sellers = {}
+
+    for listing in listings:
+        sellers[listing.seller_id] = User.query.get(listing.seller_id)
+
+    return render_template(
         "market.html",
-        listings=listings
+        listings=listings,
+        sellers=sellers
     )
 
 

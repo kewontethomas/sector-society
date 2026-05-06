@@ -1,39 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Marketplace</title>
+    <title>Exchange Network</title>
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
-<h1>Marketplace</h1>
+<div class="container">
 
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
+    <div class="top-bar">
+        <div>
+            <div class="title">Exchange Network</div>
+            <div class="subtitle">Player-created listings moving through the sector.</div>
+        </div>
 
-{% for listing in listings %}
+        <a class="button" href="/dashboard">Back to Sector</a>
+    </div>
 
-    <div style="border:1px solid white; padding:10px; margin-bottom:10px;">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
-        <p>Resource: {{ listing.resource_name }}</p>
+    <div class="grid">
 
-        <p>Quantity: {{ listing.quantity }}</p>
+        {% if listings %}
 
-        <p>Price: {{ listing.price }} coins</p>
+            {% for listing in listings %}
 
-        <a href="/buy/{{ listing.id }}">
-            Buy
-        </a>
+                <div class="card">
+
+                    {% set seller = sellers[listing.seller_id] %}
+
+                    <h2>
+                        {% if listing.resource_name == "wood" %}
+                            🪵 Scrap Timber
+                        {% elif listing.resource_name == "stone" %}
+                            🧱 Broken Concrete
+                        {% elif listing.resource_name == "metal" %}
+                            ⚙️ Rusted Alloy
+                        {% else %}
+                            ⚡ {{ listing.resource_name }}
+                        {% endif %}
+                    </h2>
+
+                    <p>
+                        Seller:
+                        <a href="/player/{{ seller.username }}">
+                            {{ seller.username }}
+                        </a>
+                    </p>
+
+                    <p>Quantity: {{ listing.quantity }}</p>
+                    <p>Price: {{ listing.price }} coins</p>
+
+                    <a class="button" href="/buy/{{ listing.id }}">
+                        Buy Listing
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="card">
+                <h2>No active listings</h2>
+                <p>The exchange is quiet. Gather resources and create the first listing.</p>
+            </div>
+
+        {% endif %}
 
     </div>
 
-{% endfor %}
-
-<a href="/dashboard">Back</a>
+</div>
 
 </body>
 </html>
