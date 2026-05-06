@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Marketplace</title>
+</head>
+<body>
+
+<h1>Marketplace</h1>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+{% for listing in listings %}
+
+    <div style="border:1px solid white; padding:10px; margin-bottom:10px;">
+
+        <p>Resource: {{ listing.resource_name }}</p>
+
+        <p>Quantity: {{ listing.quantity }}</p>
+
+        <p>Price: {{ listing.price }} coins</p>
+
+        <a href="/buy/{{ listing.id }}">
+            Buy
+        </a>
+
+    </div>
+
+{% endfor %}
+
+<a href="/dashboard">Back</a>
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Society Game</title>
+
+    <style>
+
+        body {
+            background-color: #0f1117;
+            color: #e5e7eb;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding-top: 30px;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            color: #9ca3af;
+            margin-top: 5px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: #171b24;
+            border: 1px solid #2a3140;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.4);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #60a5fa;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 14px;
+            background-color: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .button:hover {
+            background-color: #1d4ed8;
+        }
+
+        .feed-item {
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2a3140;
+        }
+
+        .flash {
+            background-color: #1f2937;
+            border-left: 4px solid #3b82f6;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+        }
+
+        .rare {
+            color: #fbbf24;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <div class="top-bar">
+
+        <div>
+            <div class="title">
+                Sector Society
+            </div>
+
+            <div class="subtitle">
+                Welcome back, {{ user.username }}
+            </div>
+        </div>
+
+        <div>
+            <a class="button" href="/logout">
+                Logout
+            </a>
+        </div>
+
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+
+                <div class="flash">
+
+                    {% if "Rare Discovery" in message %}
+                        <span class="rare">{{ message }}</span>
+                    {% else %}
+                        {{ message }}
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="grid">
+
+        <div class="card">
+
+            <h2>Identity</h2>
+
+            <p>Level: {{ user.level }}</p>
+            <p>XP: {{ user.xp }}</p>
+            <p>Reputation: {{ user.reputation }}</p>
+            <p>Coins: {{ user.coins }}</p>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Operations</h2>
+
+            <a class="button" href="/gather/wood">
+                Scavenge Scrap Timber
+            </a>
+
+            <br><br>
+
+            <a class="button" href="/gather/stone">
+                Recover Broken Concrete
+            </a>
+
+            <br><br>
+
+            <a class="button" href="/gather/metal">
+                Extract Rusted Alloy
+            </a>
+
+        </div>
+
+        <div class="card">
+
+            <h2>Network</h2>
+
+            <a class="button" href="/inventory">
+                Inventory
+            </a>
+
+            <br><br>
+
+            <a class="button" href="/market">
+                Exchange Network
+            </a>
+
+        </div>
+
+        <div class="card">
+
+            <h2>World Feed</h2>
+
+            {% for event in events %}
+
+                <div class="feed-item">
+                    {{ event.message }}
+                </div>
+
+            {% endfor %}
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
