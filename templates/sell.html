@@ -22,13 +22,17 @@
                 <a href="/player/{{ current_user.username }}">Profile</a>
                 <a href="/logout">Logout</a>
             </div>
-        </div>ages = get_flashed_messages() %}
-        {% if messages %}
-        {% for message in messages %}
-        <div class="flash">{{ message }}</div>
-        {% endfor %}
-        {% endif %}
+                </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="flash">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
         {% endwith %}
+
+        <div class="card">
 
         <div class="card">
 
@@ -42,7 +46,7 @@
 
                 <br><br>
 
-                <label for="price">Price in Trade Coins</label>
+                <label for="price">Price in Trade Notes</label>
                 <br>
                 <input type="number" id="price" name="price" placeholder="Price in coins" min="1" step="1" required>
 
