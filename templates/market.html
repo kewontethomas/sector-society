@@ -56,17 +56,25 @@
 
                 <p>
                     Seller:
-                    <a href="/player/{{ seller.username }}">
+                    <a href="{{ url_for('player_profile', username=seller.username) }}">
                         {{ seller.username }}
                     </a>
                 </p>
 
                 <p>Quantity: {{ listing.quantity }}</p>
-                <p>Price: {{ listing.price }} coins</p>
+                <p>Price: {{ listing.price }} Trade Notes</p>
 
-                <a class="button" href="/buy/{{ listing.id }}">
+                <a class="button" href="{{ url_for('buy', listing_id=listing.id) }}">
                     Buy Listing
                 </a>
+
+                {% if listing.seller_id == current_user.id %}
+                <form method="POST" action="{{ url_for('cancel_listing', listing_id=listing.id) }}">
+                    <button class="button" type="submit">
+                        Cancel Listing
+                    </button>
+                </form>
+                {% endif %}
 
             </div>
 

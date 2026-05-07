@@ -348,6 +348,38 @@ def buy(listing_id):
     return redirect(url_for("market"))
 
 
+@app.route("/cancel_listing/<int:listing_id>", methods=["POST"])
+@login_required
+def cancel_listing(listing_id):
+    listing = MarketplaceListing.query.get_or_404(listing_id)
+
+    if listing.seller_id != current_user.id:
+        flash("You can only cancel your own listings.")
+        return redirect(url_for("market"))
+
+    if listing.status != "active":
+        flash("This listing is no longer active.")
+        return redirect(url_for("market"))
+
+    add_resource(
+        current_user.id,
+        listing.resource_name,
+        listing.quantity
+    )
+
+    listing.status = "cancelled"
+
+    db.session.commit()
+
+    flash("Listing cancelled and items returned to your vault.")
+
+    create_world_event(
+        f"↩️ {current_user.username} removed a listing from The Exchange."
+    )
+
+    return redirect(url_for("market"))
+
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
