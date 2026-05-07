@@ -1,73 +1,63 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Sell Resource</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <div class="top-bar">
-        <div>
-            <div class="title">Create Exchange Listing</div>
-            <div class="subtitle">List your resource for trade coins.</div>
+        <div class="nav">
+            <div class="nav-brand">
+                In Good Company
+            </div>
+
+            <div class="nav-links">
+                <a href="/dashboard">Dashboard</a>
+                <a href="/inventory">Vault</a>
+                <a href="/market">Exchange</a>
+                <a href="/player/{{ current_user.username }}">Profile</a>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>ages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="flash">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div class="card">
+
+            <h2>Sell {{ resource }}</h2>
+
+            <form method="POST">
+
+                <label for="quantity">Quantity</label>
+                <br>
+                <input type="number" id="quantity" name="quantity" placeholder="Quantity" min="1" step="1" required>
+
+                <br><br>
+
+                <label for="price">Price in Trade Coins</label>
+                <br>
+                <input type="number" id="price" name="price" placeholder="Price in coins" min="1" step="1" required>
+
+                <br><br>
+
+                <button class="button" type="submit">
+                    Create Listing
+                </button>
+
+            </form>
+
         </div>
 
-        <a class="button" href="/inventory">Back to Inventory</a>
     </div>
-
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                <div class="flash">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-
-    <div class="card">
-
-        <h2>Sell {{ resource }}</h2>
-
-        <form method="POST">
-
-            <label for="quantity">Quantity</label>
-            <br>
-            <input
-                type="number"
-                id="quantity"
-                name="quantity"
-                placeholder="Quantity"
-                min="1"
-                step="1"
-                required
-            >
-
-            <br><br>
-
-            <label for="price">Price in Trade Coins</label>
-            <br>
-            <input
-                type="number"
-                id="price"
-                name="price"
-                placeholder="Price in coins"
-                min="1"
-                step="1"
-                required
-            >
-
-            <br><br>
-
-            <button class="button" type="submit">
-                Create Listing
-            </button>
-
-        </form>
-
-    </div>
-
-</div>
 
 </body>
+
 </html>

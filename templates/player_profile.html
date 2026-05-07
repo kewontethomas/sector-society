@@ -1,71 +1,77 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>{{ player.username }} Profile</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <div class="top-bar">
-        <div>
-            <div class="title">{{ player.username }}</div>
-            <div class="subtitle">Public sector identity record</div>
+        <div class="nav">
+            <div class="nav-brand">
+                In Good Company
+            </div>
+
+            <div class="nav-links">
+                <a href="/dashboard">Dashboard</a>
+                <a href="/inventory">Vault</a>
+                <a href="/market">Exchange</a>
+                <a href="/player/{{ current_user.username }}">Profile</a>
+                <a href="/logout">Logout</a>
+            </div>
         </div>
 
-        <div>
-            <a class="button" href="/dashboard">Back to Sector</a>
-        </div>
-    </div>
+        <div class="grid">
 
-    <div class="grid">
+            <div class="card">
+                <h2>Identity</h2>
 
-        <div class="card">
-            <h2>Identity</h2>
+                <p>Level: {{ player.level }}</p>
+                <p>XP: {{ player.xp }}</p>
+                <p>Reputation: {{ player.reputation }}</p>
+                <p>Coins: {{ player.coins }}</p>
+            </div>
 
-            <p>Level: {{ player.level }}</p>
-            <p>XP: {{ player.xp }}</p>
-            <p>Reputation: {{ player.reputation }}</p>
-            <p>Coins: {{ player.coins }}</p>
-        </div>
+            <div class="card">
+                <h2>Inventory Signals</h2>
 
-        <div class="card">
-            <h2>Inventory Signals</h2>
-
-            {% if inventory_items %}
+                {% if inventory_items %}
                 {% for item in inventory_items %}
-                    <p>
-                        {% if item.resource_name not in ['wood', 'stone', 'metal'] %}
-                            ⚡ {{ item.resource_name }} x{{ item.quantity }}
-                        {% else %}
-                            {{ item.resource_name }} x{{ item.quantity }}
-                        {% endif %}
-                    </p>
+                <p>
+                    {% if item.resource_name not in ['wood', 'stone', 'metal'] %}
+                    ⚡ {{ item.resource_name }} x{{ item.quantity }}
+                    {% else %}
+                    {{ item.resource_name }} x{{ item.quantity }}
+                    {% endif %}
+                </p>
                 {% endfor %}
-            {% else %}
+                {% else %}
                 <p>No visible inventory records.</p>
-            {% endif %}
-        </div>
+                {% endif %}
+            </div>
 
-        <div class="card">
-            <h2>Active Listings</h2>
+            <div class="card">
+                <h2>Active Listings</h2>
 
-            {% if active_listings %}
+                {% if active_listings %}
                 {% for listing in active_listings %}
-                    <p>
-                        {{ listing.quantity }} {{ listing.resource_name }}
-                        for {{ listing.price }} coins
-                    </p>
+                <p>
+                    {{ listing.quantity }} {{ listing.resource_name }}
+                    for {{ listing.price }} coins
+                </p>
                 {% endfor %}
-            {% else %}
+                {% else %}
                 <p>No active exchange listings.</p>
-            {% endif %}
+                {% endif %}
+            </div>
+
         </div>
 
     </div>
-
-</div>
 
 </body>
+
 </html>

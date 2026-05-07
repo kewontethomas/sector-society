@@ -1,49 +1,46 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Society Game</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <div class="top-bar">
-
-        <div>
-            <div class="title">
+        <div class="nav">
+            <div class="nav-brand">
                 In Good Company
             </div>
 
-            <div class="subtitle">
-                Welcome back, {{ user.username }}
+            <div class="nav-links">
+                <a href="/dashboard">Dashboard</a>
+                <a href="/inventory">Vault</a>
+                <a href="/market">Exchange</a>
+                <a href="/player/{{ current_user.username }}">Profile</a>
+                <a href="/logout">Logout</a>
             </div>
         </div>
-
-        <div>
-            <a class="button" href="/logout">
-                Logout
-            </a>
-        </div>
-
     </div>
 
     {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
+    {% if messages %}
+    {% for message in messages %}
 
-                <div class="flash">
+    <div class="flash">
 
-                    {% if "Rare Discovery" in message %}
-                        <span class="rare">{{ message }}</span>
-                    {% else %}
-                        {{ message }}
-                    {% endif %}
-
-                </div>
-
-            {% endfor %}
+        {% if "Rare Discovery" in message %}
+        <span class="rare">{{ message }}</span>
+        {% else %}
+        {{ message }}
         {% endif %}
+
+    </div>
+
+    {% endfor %}
+    {% endif %}
     {% endwith %}
 
     <div class="grid">
@@ -107,16 +104,17 @@
 
             {% for event in events %}
 
-                <div class="feed-item">
-                    {{ event.message }}
-                </div>
+            <div class="feed-item">
+                {{ event.message }}
+            </div>
 
             {% endfor %}
 
         </div>
     </div>
 
-</div>
+    </div>
 
 </body>
+
 </html>

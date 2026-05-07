@@ -1,36 +1,51 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Inventory</title>
-<link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
 
-<div class="container">
+    <div class="container">
+        <div class="nav">
+            <div class="nav-brand">
+                In Good Company
+            </div>
 
-    <div class="title">
-        Inventory Vault
-    </div>
+            <div class="nav-links">
+                <a href="/dashboard">Dashboard</a>
+                <a href="/inventory">Vault</a>
+                <a href="/market">Exchange</a>
+                <a href="/player/{{ current_user.username }}">Profile</a>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
 
-    <div class="subtitle">
-        Stored materials, recovered fragments, and unexplained finds.
-    </div>
+        <div class="title">
+            Inventory Vault
+        </div>
 
-    <div class="grid">
+        <div class="subtitle">
+            Stored materials, recovered fragments, and unexplained finds.
+        </div>
 
-        {% for item in items %}
+        <div class="grid">
+
+            {% for item in items %}
 
             <div class="item-card {% if item.resource_name not in ['wood', 'stone', 'metal'] %}rare-item{% endif %}">
 
                 <div class="item-name">
                     {% if item.resource_name == "wood" %}
-                        🪵 Scrap Timber
+                    🪵 Scrap Timber
                     {% elif item.resource_name == "stone" %}
-                        🧱 Broken Concrete
+                    🧱 Broken Concrete
                     {% elif item.resource_name == "metal" %}
-                        ⚙️ Rusted Alloy
+                    ⚙️ Rusted Alloy
                     {% else %}
-                        ⚡ {{ item.resource_name }}
+                    ⚡ {{ item.resource_name }}
                     {% endif %}
                 </div>
 
@@ -44,17 +59,18 @@
 
             </div>
 
-        {% endfor %}
+            {% endfor %}
+
+        </div>
+
+        <div class="back">
+            <a class="button" href="/dashboard">
+                Back to Sector
+            </a>
+        </div>
 
     </div>
-
-    <div class="back">
-        <a class="button" href="/dashboard">
-            Back to Sector
-        </a>
-    </div>
-
-</div>
 
 </body>
+
 </html>
