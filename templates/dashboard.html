@@ -23,95 +23,94 @@
                 <a href="/logout">Logout</a>
             </div>
         </div>
-    </div>
 
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    {% for message in messages %}
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
 
-    <div class="flash">
+        <div class="flash">
 
-        {% if "Rare Discovery" in message %}
-        <span class="rare">{{ message }}</span>
-        {% else %}
-        {{ message }}
+            {% if "Rare Discovery" in message %}
+            <span class="rare">{{ message }}</span>
+            {% else %}
+            {{ message }}
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
         {% endif %}
+        {% endwith %}
 
-    </div>
+        <div class="grid">
 
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
+            <div class="card">
 
-    <div class="grid">
+                <h2>Identity</h2>
 
-        <div class="card">
+                <p>Level: {{ user.level }}</p>
+                <p>XP: {{ user.xp }}</p>
+                <p>Reputation: {{ user.reputation }}</p>
+                <p>Trade Notes: {{ user.coins }}</p>
 
-            <h2>Identity</h2>
+                <a class="button" href="/player/{{ user.username }}">
+                    View Public Profile
+                </a>
 
-            <p>Level: {{ user.level }}</p>
-            <p>XP: {{ user.xp }}</p>
-            <p>Reputation: {{ user.reputation }}</p>
-            <p>Trade Notes: {{ user.coins }}</p>
-
-            <a class="button" href="/player/{{ user.username }}">
-                View Public Profile
-            </a>
-
-        </div>
-
-        <div class="card">
-
-            <h2>Operations</h2>
-
-            <a class="button" href="/gather/wood">
-                Scavenge Scrap Timber
-            </a>
-
-            <br><br>
-
-            <a class="button" href="/gather/stone">
-                Recover Broken Concrete
-            </a>
-
-            <br><br>
-
-            <a class="button" href="/gather/metal">
-                Extract Rusted Alloy
-            </a>
-
-        </div>
-
-        <div class="card">
-
-            <h2>Network</h2>
-
-            <a class="button" href="/inventory">
-                Inventory
-            </a>
-
-            <br><br>
-
-            <a class="button" href="/market">
-                Exchange Network
-            </a>
-
-        </div>
-
-        <div class="card">
-
-            <h2>The Wire</h2>
-
-            {% for event in events %}
-
-            <div class="feed-item">
-                {{ event.message }}
             </div>
 
-            {% endfor %}
+            <div class="card">
 
+                <h2>Operations</h2>
+
+                <a class="button" href="/gather/wood">
+                    Scavenge Scrap Timber
+                </a>
+
+                <br><br>
+
+                <a class="button" href="/gather/stone">
+                    Recover Broken Concrete
+                </a>
+
+                <br><br>
+
+                <a class="button" href="/gather/metal">
+                    Extract Rusted Alloy
+                </a>
+
+            </div>
+
+            <div class="card">
+
+                <h2>Network</h2>
+
+                <a class="button" href="/inventory">
+                    Inventory
+                </a>
+
+                <br><br>
+
+                <a class="button" href="/market">
+                    Exchange Network
+                </a>
+
+            </div>
+
+            <div class="card">
+
+                <h2>The Wire</h2>
+
+                {% for event in events %}
+
+                <div class="feed-item">
+                    {{ event.message }}
+                </div>
+
+                {% endfor %}
+
+            </div>
         </div>
-    </div>
 
     </div>
 
