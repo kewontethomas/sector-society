@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{{ company.name }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="nav">
+        <div class="nav-brand">In Good Company</div>
+
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/inventory">Vault</a>
+            <a href="/market">Exchange</a>
+            <a href="/player/{{ current_user.username }}">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="top-bar">
+        <div>
+            <div class="title">{{ company.name }}</div>
+            <div class="subtitle">{{ company.company_type }} company</div>
+        </div>
+    </div>
+
+    <div class="grid">
+
+        <div class="card">
+            <h2>Company Record</h2>
+
+            <p>Owner:
+                <a href="{{ url_for('player_profile', username=owner.username) }}">
+                    {{ owner.username }}
+                </a>
+            </p>
+
+            <p>Type: {{ company.company_type }}</p>
+            <p>Reputation: {{ company.reputation }}</p>
+
+            {% if company.description %}
+                <p>{{ company.description }}</p>
+            {% else %}
+                <p>No company description yet.</p>
+            {% endif %}
+        </div>
+
+        <div class="card">
+            <h2>Active Listings</h2>
+
+            {% if listings %}
+                {% for listing in listings %}
+                    <div class="feed-item">
+                        {{ listing.quantity }} {{ listing.resource_name }}
+                        for {{ listing.price }} Trade Notes
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No active listings.</p>
+            {% endif %}
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

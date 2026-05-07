@@ -8,6 +8,7 @@ import random
 from datetime import datetime, timedelta
 from models.marketplace import MarketplaceListing
 from models.world_event import WorldEvent
+from models.company import Company
 
 app = Flask(__name__)
 
@@ -232,6 +233,73 @@ def player_profile(username):
         player=player,
         inventory_items=inventory_items,
         active_listings=active_listings
+    )
+
+
+@app.route("/company/create", methods=["GET", "POST"])
+@login_required
+def create_company():
+    existing_company = Company.query.filter_by(
+        owner_id=current_user.id
+    ).first()
+
+    if existing_company:
+        flash("You already own a company.")
+        return redirect(url_for("company_profile", company_id=existing_company.id))
+
+    if request.method == "POST":
+        name = request.form.get("name")
+        company_type = request.form.get("company_type")
+        description = request.form.get("description")
+
+        if not name or not company_type:
+            flash("Company name and type are required.")
+            return redirect(url_for("create_company"))
+
+        existing_name = Company.query.filter_by(name=name).first()
+
+        if existing_name:
+            flash("That company name is already taken.")
+            return redirect(url_for("create_company"))
+
+        company = Company(
+            owner_id=current_user.id,
+            name=name,
+            company_type=company_type,
+            description=description
+        )
+
+        db.session.add(company)
+        db.session.commit()
+
+        flash("Company created.")
+
+        create_world_event(
+            f"🏢 {current_user.username} founded {company.name}."
+        )
+
+        return redirect(url_for("company_profile", company_id=company.id))
+
+    return render_template("create_company.html")
+
+
+@app.route("/company/<int:company_id>")
+@login_required
+def company_profile(company_id):
+    company = Company.query.get_or_404(company_id)
+
+    owner = User.query.get(company.owner_id)
+
+    listings = MarketplaceListing.query.filter_by(
+        seller_id=company.owner_id,
+        status="active"
+    ).all()
+
+    return render_template(
+        "company_profile.html",
+        company=company,
+        owner=owner,
+        listings=listings
     )
 
 
