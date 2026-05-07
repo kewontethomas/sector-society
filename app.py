@@ -295,7 +295,7 @@ def sell(resource):
         flash("Listing created.")
 
         create_world_event(
-            f"🏗️ {current_user.username} listed {quantity} {resource} for {price} coins."
+            f"🏗️ {current_user.username} listed {quantity} {resource} for {price} Trade Notes."
         )
 
         return redirect(url_for("market"))
@@ -342,7 +342,7 @@ def buy(listing_id):
     flash("Purchase successful.")
 
     create_world_event(
-        f"💰 {current_user.username} bought {listing.quantity} {listing.resource_name}."
+        f"💰 {current_user.username} bought {listing.quantity} {listing.resource_name} through The Exchange."
     )
 
     return redirect(url_for("market"))
