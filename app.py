@@ -22,6 +22,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -57,6 +58,22 @@ def create_world_event(message):
     db.session.commit()
 
 
+def get_basic_resource_total(user_id):
+    basic_resources = ["wood", "stone", "metal"]
+
+    items = Inventory.query.filter(
+        Inventory.user_id == user_id,
+        Inventory.resource_name.in_(basic_resources)
+    ).all()
+
+    total = 0
+
+    for item in items:
+        total += item.quantity
+
+    return total
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -71,13 +88,13 @@ def register():
         if not username or not password:
             flash("Username and password are required.")
             return redirect(url_for("register"))
-        
+
         existing_user = User.query.filter_by(username=username).first()
 
         if existing_user:
             flash("That username is already taken.")
             return redirect(url_for("register"))
-        
+
         new_user = User(
             username=username,
             password_hash=generate_password_hash(password)
@@ -89,7 +106,7 @@ def register():
         login_user(new_user)
 
         return redirect(url_for("dashboard"))
-    
+
     return render_template("register.html")
 
 
@@ -104,11 +121,11 @@ def login():
         if not user or not check_password_hash(user.password_hash, password):
             flash("Invalid username or password.")
             return redirect(url_for("login"))
-        
+
         login_user(user)
 
         return redirect(url_for("dashboard"))
-    
+
     return render_template("login.html")
 
 
@@ -246,6 +263,24 @@ def create_company():
     if existing_company:
         flash("You already own a company.")
         return redirect(url_for("company_profile", company_id=existing_company.id))
+    
+    REQUIRED_LEVEL = 3
+    REQUIRED_TRADE_NOTES = 150
+    REQUIRED_RESOURCES = 25
+
+    basic_resource_total = get_basic_resource_total(current_user.id)
+
+    if current_user.level < REQUIRED_LEVEL:
+        flash("You must reach Level 3 before registering your first operation.")
+        return redirect(url_for("dashboard"))
+
+    if current_user.coins < REQUIRED_TRADE_NOTES:
+        flash("You need 150 Trade Notes to register your first operation.")
+        return redirect(url_for("dashboard"))
+
+    if basic_resource_total < REQUIRED_RESOURCES:
+        flash("You need at least 25 basic resources before registering your first operation.")
+        return redirect(url_for("dashboard"))
 
     if request.method == "POST":
         name = request.form.get("name")
@@ -270,12 +305,15 @@ def create_company():
         )
 
         db.session.add(company)
+
+        current_user.coins -= REQUIRED_TRADE_NOTES
+
         db.session.commit()
 
-        flash("Company created.")
+        flash("First operation registered.")
 
         create_world_event(
-            f"🏢 {current_user.username} founded {company.name}."
+            f"🏢 {current_user.username} registered {company.name} as a new operation."
         )
 
         return redirect(url_for("company_profile", company_id=company.id))
@@ -389,7 +427,7 @@ def buy(listing_id):
         return redirect(url_for("market"))
 
     if current_user.coins < listing.price:
-        flash("Not enough coins.")
+        flash("Not enough Trade Notes.")
         return redirect(url_for("market"))
 
     seller = User.query.get(listing.seller_id)

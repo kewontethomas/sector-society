@@ -2,81 +2,76 @@
 <html>
 
 <head>
-    <title>Create Company</title>
+    <title>Register Operation</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <div class="nav">
-        <div class="nav-brand">In Good Company</div>
+        <div class="nav">
+            <div class="nav-brand">In Good Company</div>
 
-        <div class="nav-links">
-            <a href="/dashboard">Dashboard</a>
-            <a href="/inventory">Vault</a>
-            <a href="/market">Exchange</a>
-            <a href="/player/{{ current_user.username }}">Profile</a>
-            <a href="/logout">Logout</a>
+            <div class="nav-links">
+                <a href="/dashboard">Dashboard</a>
+                <a href="/inventory">Vault</a>
+                <a href="/market">Exchange</a>
+                <a href="/player/{{ current_user.username }}">Profile</a>
+                <a href="/logout">Logout</a>
+            </div>
         </div>
-    </div>
 
-    {% with messages = get_flashed_messages() %}
+        {% with messages = get_flashed_messages() %}
         {% if messages %}
-            {% for message in messages %}
-                <div class="flash">{{ message }}</div>
-            {% endfor %}
+        {% for message in messages %}
+        <div class="flash">{{ message }}</div>
+        {% endfor %}
         {% endif %}
-    {% endwith %}
+        {% endwith %}
 
-    <div class="card">
-        <h2>Found a Company</h2>
+        <div class="card">
+            <h2>Register First Operation</h2>
 
-        <form method="POST">
-            <label>Company Name</label>
-            <br>
-            <input
-                type="text"
-                name="name"
-                placeholder="Example: Greenbelt Farms"
-                maxlength="80"
-                required
-            >
+            <p>
+                Requirements: Level 3, 150 Trade Notes, and 25 basic resources.
+            </p>
 
-            <br><br>
+            <form method="POST">
+                <label>Operation Name</label>
+                <br>
+                <input type="text" name="name" placeholder="Example: Greenbelt Farms" maxlength="80" required>
 
-            <label>Company Type</label>
-            <br>
-            <select name="company_type" required>
-                <option value="">Choose a type</option>
-                <option value="Salvage">Salvage</option>
-                <option value="Farming">Farming</option>
-                <option value="Logistics">Logistics</option>
-                <option value="Trading">Trading</option>
-                <option value="Entertainment">Entertainment</option>
-                <option value="Construction">Construction</option>
-            </select>
+                <br><br>
 
-            <br><br>
+                <label>Operation Type</label>
+                <br>
+                <select name="company_type" required>
+                    <option value="">Choose a type</option>
+                    <option value="Salvage">Salvage</option>
+                    <option value="Farming">Farming</option>
+                    <option value="Logistics">Logistics</option>
+                    <option value="Trading">Trading</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Construction">Construction</option>
+                </select>
 
-            <label>Description</label>
-            <br>
-            <textarea
-                name="description"
-                placeholder="What does your company do?"
-                maxlength="255"
-            ></textarea>
+                <br><br>
 
-            <br><br>
+                <label>Description</label>
+                <br>
+                <textarea name="description" placeholder="What does your operation do?" maxlength="255"></textarea>
 
-            <button class="button" type="submit">
-                Create Company
-            </button>
-        </form>
+                <br><br>
+
+                <button class="button" type="submit">
+                    Register Operation
+                </button>
+            </form>
+        </div>
+
     </div>
-
-</div>
 
 </body>
+
 </html>
